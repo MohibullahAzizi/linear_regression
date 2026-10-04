@@ -1,6 +1,22 @@
 {
   "previewPort": 3000,
-  "healthPath": "/api/status",
-  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
-  "secrets": []
+  "healthPath": "/",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d --build",
+  "secrets": [
+    {
+      "name": "TELEGRAM_BOT_TOKEN",
+      "description": "Optional. Bot token from @BotFather to receive contact/inquiry/newsletter leads in Telegram.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "TELEGRAM_CHAT_ID",
+      "description": "Optional. Telegram chat/group id where lead messages are delivered.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "CRM_WEBHOOK_URL",
+      "description": "Optional. Webhook URL (CRM / Zapier / Make) that receives each lead as JSON.",
+      "requiredAtBoot": false
+    }
+  ]
 }

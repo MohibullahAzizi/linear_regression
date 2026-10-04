@@ -1,3 +1,64 @@
+# افق املاک — وب‌سایت املاک لوکس (HORIZON PROPERTIES)
+
+وب‌سایت کاملاً فارسی و راست‌به‌چپ (RTL) برای یک آژانس املاک لوکس، ساخته‌شده با
+**Next.js (App Router) + TypeScript + Tailwind CSS**.
+
+## راه‌اندازی
+
+```bash
+npm install
+npm run dev      # http://localhost:3000
+npm run build && npm start
+```
+
+در محیط Base44، اپ با Docker Compose اجرا می‌شود:
+
+```bash
+docker compose -f docker-compose.base44.yml up -d --build
+```
+
+- سایت (Next.js): پورت `3000`
+- نوت‌بوک‌ها (JupyterLab): پورت `8888`
+
+## ساختار پروژه
+
+```
+app/                 # مسیرها (App Router)
+  page.tsx           # صفحه اصلی (هیرو، درباره ما، املاک ویژه، آمار، CTA)
+  properties/        # فهرست املاک + صفحه جزئیات /properties/[slug]
+  about|services|team|contact|favorites/
+  api/               # contact | inquiry | newsletter  (اعتبارسنجی + ارسال سرنخ)
+  sitemap.ts robots.ts
+components/          # Navbar، Hero، SectionHeading، PropertyCard، Carousel،
+                     # StatsCounter، ContactForm، Footer، MortgageCalculator، ...
+data/properties.json # ۱۲ ملک نمونه
+lib/                 # site، properties، format (اعداد فارسی/تقویم جلالی)، validation، ...
+```
+
+## امکانات
+
+- **RTL کامل + فونت وزیرمتن**، اعداد فارسی، قیمت به تومان، تاریخ جلالی.
+- **ناوبری**: شفاف روی هیرو، تیره پس از اسکرول، خط طلایی لینک فعال، منوی کشویی موبایل.
+- **کاروسل املاک ویژه** (Swiper) با فلش‌های معکوس، درگ/سوایپ و اسلاید بعدی نمایان.
+- **فیلتر/مرتب‌سازی/صفحه‌بندی سمت کلاینت** در `/properties` با پارامترهای URL.
+- **صفحه جزئیات**: گالری با لایت‌باکس، نقشه، ماشین‌حساب اقساط، فرم درخواست بازدید.
+- **فرم‌ها** با react-hook-form + zod و API Routes آماده ارسال به **تلگرام** یا **CRM**.
+- **علاقه‌مندی‌ها** در localStorage، دکمه شناور واتساپ، لینک تماس مستقیم.
+- **SEO**: متا/Open Graph، sitemap.xml، robots.txt، داده ساخت‌یافته JSON-LD.
+- **دسترس‌پذیری** و انیمیشن‌های ظریف (fade-up، شمارنده‌های متحرک).
+
+## متغیرهای محیطی (اختیاری)
+
+برای فعال‌کردن ارسال سرنخ‌ها، این‌ها را تنظیم کنید (در غیر این صورت فرم‌ها فقط لاگ می‌شوند):
+
+| متغیر | توضیح |
+| --- | --- |
+| `TELEGRAM_BOT_TOKEN` | توکن ربات تلگرام (از @BotFather) |
+| `TELEGRAM_CHAT_ID` | شناسه چت/گروه برای دریافت پیام‌ها |
+| `CRM_WEBHOOK_URL` | آدرس وب‌هوک برای ارسال JSON سرنخ |
+
+---
+
 # Fundamental of Artificial Intelligence - Phase 1 Projects
 
 This repository contains three distinct AI projects covering fundamental concepts in search algorithms, machine learning, and optimization techniques.

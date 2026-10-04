@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Design tokens (hex originals in comments)
+   --------------------------------------------------------------------------- */
+:root {
+  --navy: 10 37 64;        /* #0A2540 */
+  --navy-dark: 6 26 46;    /* #061A2E */
+  --gold: 212 175 55;      /* #D4AF37 */
+  --bg-soft: 248 250 252;  /* #F8FAFC */
+  --text: 30 41 59;        /* #1E293B */
+  --muted: 100 116 139;    /* #64748B */
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-text font-sans antialiased;
+  }
+
+  /* Visible, consistent focus states for keyboard users. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--gold));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: rgb(var(--gold) / 0.3);
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold
+           transition-all duration-300 focus-visible:outline-none disabled:opacity-60;
+  }
+
+  .btn-navy {
+    @apply btn bg-navy text-white hover:bg-navy-dark hover:shadow-card-hover;
+  }
+
+  .btn-gold {
+    @apply btn border border-gold/70 text-gold hover:bg-gold hover:text-navy;
+  }
+
+  .btn-outline-navy {
+    @apply btn border border-navy/20 text-navy hover:border-navy hover:bg-navy hover:text-white;
+  }
+
+  .eyebrow {
+    @apply text-xs font-bold uppercase tracking-[0.25em] text-gold;
+  }
+
+  .section {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+}
+
+/* Swiper theming (RTL aware) */
+.swiper-pagination-bullet {
+  background: rgb(var(--muted));
+  opacity: 0.35;
+}
+.swiper-pagination-bullet-active {
+  background: rgb(var(--gold));
+  opacity: 1;
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
