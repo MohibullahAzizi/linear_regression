@@ -1,0 +1,23 @@
+services:
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile.base44
+    image: base44-jupyter:dev
+    restart: on-failure
+    working_dir: /work
+    volumes:
+      - .:/work
+    ports:
+      - "3000:8888"
+    command:
+      - sh
+      - -ec
+      - |
+        exec jupyter lab --config=/work/.base44/jupyter_lab_config.py
+    healthcheck:
+      test: ["CMD", "sh", "-ec", "curl -fsS http://localhost:8888/api/status >/dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
