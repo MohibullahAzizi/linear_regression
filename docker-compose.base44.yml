@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sentinel-backend
+    restart: on-failure
+    volumes:
+      - ./backend:/app
+      - sentinel-data:/app/data
+    ports:
+      - "8000:8000"
+    environment:
+      - BASE44_PREVIEW_MODE=${BASE44_PREVIEW_MODE:-0}
+      - DATABASE_URL=sqlite:///./data/sentinel.db
+      - CORS_ORIGINS=http://localhost:3000,https://3000-${BASE44_PUBLIC_HOST_SUFFIX}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sentinel-frontend
+    restart: on-failure
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:5173"
+    environment:
+      - BASE44_PREVIEW_MODE=${BASE44_PREVIEW_MODE:-0}
+      - BASE44_SANDBOX_HOST_DOMAIN=${BASE44_SANDBOX_HOST_DOMAIN:-e2b.app}
+      - VITE_API_URL=http://localhost:8000
+      - VITE_PUBLIC_API_URL=https://8000-${BASE44_PUBLIC_HOST_SUFFIX}
+      - __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=${BASE44_PUBLIC_HOST_SUFFIX}
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:5173/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  sentinel-data:
